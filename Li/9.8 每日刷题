@@ -1,0 +1,217 @@
+1、反转链表
+````
+/*
+public class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}*/
+public class Solution {
+    public ListNode ReverseList(ListNode head) {
+        if(head == null || head.next == null)
+            return head;
+        ListNode list = null;
+        ListNode p  = null;
+        while(head != null){
+            p = head.next;
+            head.next = list;
+            list = head;
+            head = p;
+        }
+        return list;
+    }
+}
+````
+2、二分查找
+````
+import java.util.*;
+
+
+public class Solution {
+    /**
+     * 二分查找
+     * @param n int整型 数组长度
+     * @param v int整型 查找值
+     * @param a int整型一维数组 有序数组
+     * @return int整型
+     */
+    public int upper_bound_ (int n, int v, int[] a) {
+        // write code here
+        int left= 0;
+        int right = n-1;
+        while(left < right){
+            int mid =(right + left)/2;
+            if(a[mid] < v){
+                left = mid+1;
+            }else {
+                right = mid;
+            }
+        }
+        return (a[left] < v ? n:left)+1;
+    }
+}
+````
+3、实现二叉树的先序、中序和后序遍历
+````
+import java.util.*;
+
+/*
+ * public class TreeNode {
+ *   int val = 0;
+ *   TreeNode left = null;
+ *   TreeNode right = null;
+ * }
+ */
+
+public class Solution {
+    /**
+     * 
+     * @param root TreeNode类 the root of binary tree
+     * @return int整型二维数组
+     */
+    private static ArrayList<Integer> pre = new ArrayList<>();
+    private static ArrayList<Integer> in = new ArrayList<>();
+    private static ArrayList<Integer> after = new ArrayList<>();
+    public int[][] threeOrders (TreeNode root) {
+        int [][] result = new int[3][];
+        preRoot(root);
+        result[0] = toIntArray(pre);
+        inRoot(root);
+        result[1] = toIntArray(in);
+        afterRoot(root);
+        result[2] = toIntArray(after);
+        return result;
+    }
+    public void preRoot(TreeNode root){
+        if(root != null){
+            pre.add(root.val);
+            preRoot(root.left);
+            preRoot(root.right);
+        }
+    }
+    public void inRoot(TreeNode root){
+        if(root != null){
+            inRoot(root.left);
+            in.add(root.val);
+            inRoot(root.right);
+        }
+    }
+    public void afterRoot(TreeNode root){
+        if(root != null){
+            afterRoot(root.left);
+            afterRoot(root.right);
+            after.add(root.val);
+        }
+    }
+    public static final int[] toIntArray(ArrayList<Integer> arrayList){
+        int [] intArray = arrayList.stream().mapToInt(Integer::intValue).toArray();
+        return intArray;
+    }
+}
+````
+4、判断链表中是否有环
+````
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        if(head == null || head.next == null || head.next.next == null)
+            return false;
+        ListNode fast = head;
+        ListNode slow = head;
+        while( fast != null && fast.next!= null){
+            fast = fast.next.next;
+            slow = slow.next;
+            if(slow == fast){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+````
+5、删除链表的倒数第n个节点
+````
+import java.util.*;
+
+/*
+ * public class ListNode {
+ *   int val;
+ *   ListNode next = null;
+ * }
+ */
+
+public class Solution {
+    /**
+     * 
+     * @param head ListNode类 
+     * @param n int整型 
+     * @return ListNode类
+     */
+    public ListNode removeNthFromEnd (ListNode head, int n) {
+        
+        // write code here
+        ListNode list = new ListNode(-1);
+        list.next = head;
+        ListNode pre = list;
+        ListNode p = list;
+        for(int i = 1; i<= n+1; i++){
+            p = p.next;
+        }
+        while(p != null){
+            p = p.next;
+            pre = pre.next;
+        }
+        pre.next = pre.next.next;
+        return list.next;
+    }
+}
+````
+6、链表中环的入口节点
+````
+/*
+ public class ListNode {
+    int val;
+    ListNode next = null;
+ 
+    ListNode(int val) {
+        this.val = val;
+    }
+}
+*/
+public class Solution {
+ 
+    public ListNode EntryNodeOfLoop(ListNode pHead)
+    {
+        ListNode fast = pHead;
+        ListNode low = pHead;
+        while( fast != null && fast.next != null){
+            fast = fast.next.next;
+            low = low.next;
+            if(fast == low){
+                break;
+            }
+        }
+        if( fast == null || fast.next == null)
+            return null;
+        low = pHead;
+        while(fast != low){
+            fast = fast.next;
+            low = low.next;
+        }
+        return low;
+    }
+}
+````
